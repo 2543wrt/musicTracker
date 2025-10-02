@@ -3,7 +3,7 @@ import React from 'react';
 
 export default function Login() {
   const handleLogin = () => {
-    window.location.href = 'http://127.0.0.1:4000/login';
+    window.location.href = 'https://music-tracker-psi.vercel.app/api/login';
   };
 
   return (

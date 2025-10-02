@@ -21,7 +21,7 @@ export default function Callback() {
     try {
       // In a real app, this should be done through your backend
       // For now, we'll simulate storing the code and redirect to dashboard
-      const response = await fetch(`http://127.0.0.1:4000/callback?code=${code}`);
+      const response = await fetch(`https://music-tracker-psi.vercel.app/api/callback?code=${code}`);
       const data = await response.json();
       
       if (data.access_token) {

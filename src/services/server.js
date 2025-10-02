@@ -11,7 +11,7 @@ app.use(express.json());
 
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
-const REDIRECT_URI = 'http://127.0.0.1:3000/callback';
+const REDIRECT_URI = 'https://music-tracker-psi.vercel.app/callback';
 
 if (!CLIENT_ID || !CLIENT_SECRET) {
   console.error('Missing Spotify CLIENT_ID or CLIENT_SECRET in .env.local file');
