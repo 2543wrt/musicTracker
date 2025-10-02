@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "api/login.js": {
+      "runtime": "nodejs18.x"
+    },
+    "api/callback.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
+}
