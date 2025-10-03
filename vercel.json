@@ -8,5 +8,6 @@
     "env": {
       "NODE_VERSION": "18"
     }
-  }
+  },
+  "nodeVersion": "18.x"
 }
