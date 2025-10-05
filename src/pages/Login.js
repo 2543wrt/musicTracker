@@ -1,62 +1,45 @@
-// src/components/Login.jsx
-import React, { useState } from 'react';
+
+import React, { useEffect } from 'react';
+import '../css/login.css';
 
 function Login() {
-  const [credentials, setCredentials] = useState({ username: '', password: '' });
-  const [loading, setLoading] = useState(false);
+  const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID || 'c2b820ea51594139ba5e988dbcc9dc4d';
+  const REDIRECT_URI = 'http://localhost:3000/callback';
+  const SCOPES = 'user-read-private user-read-email user-top-read';
 
-  const handleInputChange = (e) => {
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
-  };
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+
+
+
+  const handleLogin = () => {
+    const params = new URLSearchParams({
+      client_id: CLIENT_ID,
+      response_type: 'code',
+      redirect_uri: REDIRECT_URI,
+      scope: SCOPES
+    });
     
-    // Simulate authentication - replace with actual Spotify auth
-    setTimeout(() => {
-      localStorage.setItem('spotify_access_token', 'demo_token');
-      window.location.href = '/dashboard';
-    }, 1000);
+    const authUrl = `https://accounts.spotify.com/authorize?${params.toString()}`;
+    window.location.href = authUrl;
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="text-center text-3xl font-extrabold text-gray-900">
+    <div className="login-container">
+      <div className="login-card">
+        <div className="login-header">
+          <h2 className="login-title">
             Login to Spotify
           </h2>
+          <p className="login-subtitle">Enter your credentials to continue</p>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleLogin}>
-          <div className="space-y-4">
-            <input
-              name="username"
-              type="text"
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-              placeholder="Spotify Username"
-              value={credentials.username}
-              onChange={handleInputChange}
-            />
-            <input
-              name="password"
-              type="password"
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-              placeholder="Password"
-              value={credentials.password}
-              onChange={handleInputChange}
-            />
-          </div>
+        <div className="login-form">
           <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 disabled:opacity-50"
+            onClick={handleLogin}
+            className="login-button"
           >
-            {loading ? 'Logging in...' : 'Login with Spotify'}
+            Login with Spotify
           </button>
-        </form>
+        </div>
       </div>
     </div>
   );

@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 
-export default function Callback() {
+function Callback() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
     const error = urlParams.get('error');
 
     if (error) {
-      console.error('Spotify authorization error:', error);
+      console.error('Spotify auth error:', error);
       window.location.href = '/';
       return;
     }
@@ -18,32 +18,45 @@ export default function Callback() {
   }, []);
 
   const exchangeCodeForToken = async (code) => {
+    const CLIENT_ID = 'c2b820ea51594139ba5e988dbcc9dc4d';
+    const REDIRECT_URI = 'http://localhost:3000/callback';
+
     try {
-      // In a real app, this should be done through your backend
-      // For now, we'll simulate storing the code and redirect to dashboard
-      const response = await fetch(`https://music-tracker-psi.vercel.app/api/callback?code=${code}`);
+      const response = await fetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          grant_type: 'authorization_code',
+          code: code,
+          redirect_uri: REDIRECT_URI,
+          client_id: CLIENT_ID,
+        }),
+      });
+
       const data = await response.json();
-      
       if (data.access_token) {
         localStorage.setItem('spotify_access_token', data.access_token);
         window.location.href = '/dashboard';
       } else {
-        throw new Error('No access token received');
+        console.error('Failed to get access token:', data);
+        window.location.href = '/';
       }
     } catch (error) {
       console.error('Error exchanging code for token:', error);
-      // For demo purposes, we'll just redirect to dashboard
-      // In production, you'd want proper error handling
-      window.location.href = '/dashboard';
+      window.location.href = '/';
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="min-h-screen flex items-center justify-center">
       <div className="text-center">
-        <h2 className="text-2xl font-semibold mb-4">Connecting to Spotify...</h2>
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto"></div>
+        <h2 className="text-2xl font-bold mb-4">Authenticating...</h2>
+        <p>Please wait while we log you in.</p>
       </div>
     </div>
   );
 }
+
+export default Callback;

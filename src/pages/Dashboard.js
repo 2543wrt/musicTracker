@@ -23,6 +23,13 @@ export default function Dashboard() {
           'Authorization': `Bearer ${token}`
         }
       });
+      
+      if (response.status === 401) {
+        localStorage.removeItem('spotify_access_token');
+        window.location.href = '/';
+        return;
+      }
+      
       const userData = await response.json();
       setUser(userData);
     } catch (error) {
@@ -37,6 +44,13 @@ export default function Dashboard() {
           'Authorization': `Bearer ${token}`
         }
       });
+      
+      if (response.status === 401) {
+        localStorage.removeItem('spotify_access_token');
+        window.location.href = '/';
+        return;
+      }
+      
       const data = await response.json();
       setTopTracks(data.items || []);
       setLoading(false);
@@ -45,6 +59,8 @@ export default function Dashboard() {
       setLoading(false);
     }
   };
+
+
 
   const logout = () => {
     localStorage.removeItem('spotify_access_token');
